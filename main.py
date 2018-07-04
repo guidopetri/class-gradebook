@@ -7,22 +7,18 @@
 import random
 
 random.seed(9)
-studentCount = 10
+studentCount = 100
 
 class Grade():
 	def __init__(self,gradeNum):
 		self.students = []
 		self.gradeNum = gradeNum
 		self.size = len(self.students)
-		self.calcAverage()
-		self.calcMedian()
 		return
 
 	def addStudent(self,student):
 		self.students.append(student)
 		self.size += 1
-		self.calcAverage()
-		self.calcMedian()
 		return
 
 	def calcAverage(self):
@@ -84,6 +80,8 @@ for i in range(0,studentCount):
 printJob = sorted([(fulano.name,str(fulano.average)) for fulano in students.values()],key=lambda x:x[1],reverse=True)
 for item in printJob:
 	print(item[0]+",\t",item[1])
+grade1.calcAverage()
+grade1.calcMedian()
 print("\nClass average: %s"%grade1.average)
 print("\nClass median: %s"%grade1.median)
 print("\nValedictorian: %s"%grade1.valedictorian)
