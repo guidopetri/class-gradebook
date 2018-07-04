@@ -40,9 +40,9 @@ class Grade():
 		if len(self.students) > 0:
 			halflen = len(self.students)/2 - 1
 			if halflen.is_integer():
-				self.median = self.students[int(halflen)].average
+				self.median = sum([y.average for y in sorted(self.students,key=lambda x:x.average)[int(halflen):int(halflen+2)]])/2
 			else:
-				self.median = (self.students[int(halflen+0.5)].average + self.students[int(halflen-0.5)].average)/2
+				self.median = sorted(self.students,key=lambda x:x.average)[int(halflen+0.5)].average
 		else:
 			self.median = 0
 		return
@@ -81,8 +81,9 @@ for i in range(0,studentCount):
 		students[i].addGrade(random.randrange(0,101),gradeWeights[j])
 	grade1.addStudent(students[i])
 
-
-print("\n".join([fulano.name+", \t\t"+str(fulano.average) for fulano in students.values()]))
+printJob = sorted([(fulano.name,str(fulano.average)) for fulano in students.values()],key=lambda x:x[1],reverse=True)
+for item in printJob:
+	print(item[0]+",\t",item[1])
 print("\nClass average: %s"%grade1.average)
 print("\nClass median: %s"%grade1.median)
 print("\nValedictorian: %s"%grade1.valedictorian)
