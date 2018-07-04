@@ -15,12 +15,14 @@ class Grade():
 		self.gradeNum = gradeNum
 		self.size = len(self.students)
 		self.calcAverage()
+		self.calcMedian()
 		return
 
 	def addStudent(self,student):
 		self.students.append(student)
 		self.size += 1
 		self.calcAverage()
+		self.calcMedian()
 		return
 
 	def calcAverage(self):
@@ -32,6 +34,17 @@ class Grade():
 			self.average = 0
 			self.valedictorian = 0
 			self.classclown = 0
+		return
+
+	def calcMedian(self):
+		if len(self.students) > 0:
+			halflen = len(self.students)/2 - 1
+			if halflen.is_integer():
+				self.median = self.students[int(halflen)].average
+			else:
+				self.median = (self.students[int(halflen+0.5)].average + self.students[int(halflen-0.5)].average)/2
+		else:
+			self.median = 0
 		return
 
 class Student():
@@ -68,7 +81,9 @@ for i in range(0,studentCount):
 		students[i].addGrade(random.randrange(0,101),gradeWeights[j])
 	grade1.addStudent(students[i])
 
+
 print("\n".join([fulano.name+", \t\t"+str(fulano.average) for fulano in students.values()]))
 print("\nClass average: %s"%grade1.average)
+print("\nClass median: %s"%grade1.median)
 print("\nValedictorian: %s"%grade1.valedictorian)
 print("\nClass clown: %s"%grade1.classclown)
