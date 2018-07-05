@@ -26,13 +26,15 @@ class School():
 
 	def calcAverage(self):
 		if self.size > 0:
-			self.average = self.students.groupby(['Grade']).agg({'Grade Average':statistics.mean})
-#			self.valedictorian = tuple([(x.name,x.average) for x in self.students if x.average == max([y.average for y in self.students])]) #improve this
-#			self.classclown = tuple([(x.name,x.average) for x in self.students if x.average == min([y.average for y in self.students])]) #and this
+			self.stats = self.students.groupby(['Grade']).agg({'Grade Average':[statistics.mean,statistics.median,min,max]})
+			self.stats.columns = self.stats.columns.droplevel(0)
+			self.stats = pd.merge(self.stats,self.students.reset_index()[['Grade Average','index']],left_on='min',right_on='Grade Average',how='left')
+			self.stats = pd.merge(self.stats,self.students.reset_index()[['Grade Average','index']],left_on='max',right_on='Grade Average',how='left')
+			self.stats = self.stats[['mean','median','min','max','index_x','index_y']]
+			self.stats.rename(columns={'index_x':'classclown','index_y':'valedictorian'},inplace=True)
+			self.stats = self.stats.transpose().rename(columns={0:'Value'})
 		else:
-			self.average = 0
-			self.valedictorian = 0
-			self.classclown = 0
+			self.stats = pd.DataFrame(data=[],columns='Value')
 		return
 
 	def calcMedian(self):
@@ -85,7 +87,7 @@ grade1.students.sort_values(by='Grade Average',inplace=True,ascending=False)
 grade1.calcAverage()
 #grade1.calcMedian()
 print(grade1.students)
-print("\nClass average: ",grade1.average)
+print("\nClass stats:\n",grade1.stats)
 #print("\nClass median: %s"%grade1.median)
 #print("\nValedictorian: %s"%grade1.valedictorian)
 #print("\nClass clown: %s"%grade1.classclown)
