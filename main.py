@@ -38,10 +38,10 @@ class School():
 		return
 
 	def calcMedian(self):
-		if len(self.students) > 0:
-			halflen = len(self.students)/2 - 1
-			if halflen.is_integer():
-				self.median = sum([y.average for y in sorted(self.students,key=lambda x:x.average)[int(halflen):int(halflen+2)]])/2
+		if self.size > 0:
+			halfsize = self.size/2 - 1
+			if halfsize.is_integer():
+				self.median = statistics.median(grade1.students['Grade Average'].tolist())
 			else:
 				self.median = sorted(self.students,key=lambda x:x.average)[int(halflen+0.5)].average
 		else:
